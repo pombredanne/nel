@@ -7,10 +7,11 @@ from collections import defaultdict
 from itertools import islice, izip
 from pymongo import MongoClient
 
-import logging
+from nel import logging
 log = logging.getLogger()
 
 DATASTORE_URI_VAR = 'NEL_DATASTORE_URI'
+DEFAULT_DATASTORE_URI = 'redis://localhost'
 
 class Store(object):
     def flush(self):
@@ -33,7 +34,7 @@ class StoreBase(object):
     @classmethod
     def Get(cls, store_id, **kwargs):
         uri = kwargs.pop('uri', None)
-        uri = uri or os.environ.get(DATASTORE_URI_VAR, 'mongodb://localhost')
+        uri = uri or os.environ.get(DATASTORE_URI_VAR, DEFAULT_DATASTORE_URI)
         proto = uri.split(':')[0] if uri else None
 
         # lookup is cached to avoid reflection

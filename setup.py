@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = '0.3.0'
+__version__ = '0.3.3'
 __pkg_name__ = 'nel'
 
 setup(
@@ -43,7 +43,9 @@ setup(
         "scipy",
         "six",
         "wsgiref",
-        "ujson"
+        "ujson",
+        "progressbar2",
+        "spacy"
     ],
     test_suite = __pkg_name__ + '.test'
 )

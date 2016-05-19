@@ -6,7 +6,7 @@ from ..doc import Doc
 from ..features import mapping
 from ..model.resolution import Classifier
 
-import logging
+from nel import logging
 log = logging.getLogger()
 
 class TrainMentionClassifier(object):
@@ -35,6 +35,9 @@ class TrainMentionClassifier(object):
         for x, cls in self.iter_instances(mapper(doc) for doc in docs):
             X.append(x)
             y.append(cls)
+
+        X = numpy.array(X)
+        y = numpy.array(y)
 
         log.info('Fitting model over %i instances...', len(y))
         classifier = self.init_model()

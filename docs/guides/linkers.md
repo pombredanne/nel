@@ -1,3 +1,8 @@
+# Building a Linker
+
+## Pipeline Config
+
+```javascript
 [{
     "type": "Tagger",
     "name": "CRFTagger",
@@ -34,30 +39,10 @@
         "classifier": "ranker"
     }
 }, {
-    "type": "Feature",
-    "name": "EmbeddingCoherence",
-    "params": {
-        "embedding_model_tag": "wikipedia",
-        "ranking_feature": "ClassifierScore[ranker]"
-    }
-}, {
-    "type": "Feature",
-    "name": "ClassifierScore",
-    "params": {
-        "classifier": "reranker"
-    }
-}, {
-    "type": "Feature",
-    "name": "ClassifierScore",
-    "params": {
-        "classifier": "resolver"
-    }
-}, {
     "type": "Resolver",
     "name": "FeatureRankResolver",
     "params": {
-        "ranking_feature": "ClassifierScore[reranker]",
-        "resolving_feature": "ClassifierScore[resolver]",
-        "resolving_threshold": 0.5
+        "ranking_feature": "ClassifierScore[ranker]"
     }
 }]
+```

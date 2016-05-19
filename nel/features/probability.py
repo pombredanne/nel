@@ -5,7 +5,7 @@ from .feature import Feature
 from ..model import disambiguation
 from ..process.candidates import CandidateGenerator
 
-import logging
+from nel import logging
 log = logging.getLogger()
 
 class LogFeature(Feature):    
@@ -18,16 +18,20 @@ class LogFeature(Feature):
 @Feature.Extractable
 class EntityProbability(LogFeature):
     """ Entity prior probability. """
-    def __init__(self, entity_prior_model_tag):
-        self.tag = entity_prior_model_tag
+    def __init__(self, entity_model_tag):
+        self.tag = entity_model_tag
         self.em = disambiguation.EntityCounts(self.tag)
 
+    def compute_doc_state(self, doc):
+        candidates = set(c.id for chain in doc.chains for c in chain.candidates)
+        return dict(self.em.iter_counts(candidates))
+
     def compute_raw(self, doc, chain, candidate, state):
-        return self.em.count(candidate.id) + 0.1
+        return state[candidate.id] + 0.1
 
     @classmethod
     def add_arguments(cls, p):
-        p.add_argument('entity_prior_model_tag', metavar='ENTITY_MODEL_TAG')
+        p.add_argument('entity_model_tag', metavar='ENTITY_MODEL_TAG')
         p.set_defaults(featurecls=cls)
         return p
 
